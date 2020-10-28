@@ -1,0 +1,27 @@
+@import "~vars/screens";
+
+$navWidth: 200px;
+
+.navContainer {
+    flex: 0 0 $navWidth;
+    width: $navWidth;
+
+    .nav {
+        width: $navWidth;
+    }
+}
+
+@media all and (max-width: $screen_md) {
+    .navContainer {
+        width: 0;
+
+        .nav {
+            transform: translateX(-$navWidth);
+            transition: transform 1s ease-in-out;
+        }
+
+        .nav.opened {
+            transform: translateX(0);
+        }
+    }
+}

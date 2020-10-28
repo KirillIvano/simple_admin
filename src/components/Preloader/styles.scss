@@ -1,0 +1,25 @@
+@import "~vars/colors";
+
+@keyframes roll {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.preloaderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .preloader {
+        width: 100px;
+        height: 100px;
+        background: $main;
+
+        animation: roll 1s infinite linear;
+    }
+}

@@ -1,0 +1,11 @@
+@import "~vars/pads";
+
+.appContainer {
+    display: flex;
+
+    .pageContent {
+        flex: 1 1 auto;
+
+        padding: $pad8;
+    }
+}
