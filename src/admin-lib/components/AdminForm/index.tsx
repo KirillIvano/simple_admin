@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom';
 import classnames from 'classnames';
 
 import {request} from '@/util/request';
-import {DataType, getContentTypeFromDataType} from '@/admin-lib/util/dataType';
+import {DataType} from '@/admin-lib/util/dataType';
 import {formDataToJson} from '@/admin-lib/util/formDataToJson';
 
 import {filterRequestParams} from './helpers/filterRequestParams';
@@ -22,6 +22,7 @@ type AdminFormProps = {
     handleSuccess?: () => void;
     handleError?: (error: string) => void;
     handleData?: (data: FormData) => void;
+    enhanceDataBeforeSend?: (data: FormData) => FormData;
 
     requestParams?: Omit<RequestInit, 'body' | 'method' | 'headers'>
 }
@@ -38,14 +39,24 @@ const AdminForm = ({
     handleSuccess,
     handleError,
     handleData,
+    enhanceDataBeforeSend,
 
     requestParams={},
 }: AdminFormProps) => {
     const history = useHistory();
 
-    const performRequest = async (body: FormData) => {
-        const jsonBody = dataType === 'json' ? formDataToJson(body) : body;
-        const headers = {'Content-Type': getContentTypeFromDataType(dataType)};
+    const getHeaders = () => dataType === 'json' ? {'Content-Type': 'application/json'} : undefined;
+
+    const prepareBodyForSending = (body: FormData): string | FormData => {
+        const enhancedBody = enhanceDataBeforeSend ? enhanceDataBeforeSend(body) : body;
+        const jsonBody = dataType === 'json' ? formDataToJson(enhancedBody) : enhancedBody;
+
+        return jsonBody;
+    };
+
+    const performRequest = async (data: FormData) => {
+        const body = prepareBodyForSending(data);
+        const headers = getHeaders();
 
         const filteredParams = filterRequestParams(requestParams);
 
@@ -54,7 +65,7 @@ const AdminForm = ({
             {
                 method,
                 headers,
-                body: jsonBody,
+                body,
 
                 ...filteredParams,
             },
