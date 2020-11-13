@@ -7,10 +7,11 @@ import {DataType} from '@/admin-lib/util/dataType';
 import {formDataToJson} from '@/admin-lib/util/formDataToJson';
 import {WithFormContext} from '@/admin-lib/contexts/FormContext';
 import {useFormErrors} from '@/admin-lib/hooks/useFormErrors';
+import {Validators} from '@/admin-lib/types/form';
 
 import {filterRequestParams} from './helpers/filterRequestParams';
 import {getHeadersFromDataType} from './helpers/getHeadersFromDataType';
-import {getFormErrors, Validators} from './helpers/getFormErrors';
+import {getFormErrors} from './helpers/getFormErrors';
 import {getFormDataFromForm} from './helpers/getFormDataFromForm';
 
 
