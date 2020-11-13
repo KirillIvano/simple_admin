@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import classnames from 'classnames';
 
 import {request} from '@/util/request';
 import {DataType} from '@/admin-lib/util/dataType';
 import {formDataToJson} from '@/admin-lib/util/formDataToJson';
+import {WithFormContext} from '@/admin-lib/contexts/FormContext';
+import {useFormErrors} from '@/admin-lib/hooks/useFormErrors';
 
 import {filterRequestParams} from './helpers/filterRequestParams';
+import {getHeadersFromDataType} from './helpers/getHeadersFromDataType';
+import {getFormErrors, Validators} from './helpers/getFormErrors';
+import {getFormDataFromForm} from './helpers/getFormDataFromForm';
 
 
 type AdminFormProps = {
@@ -24,7 +29,8 @@ type AdminFormProps = {
     handleData?: (data: FormData) => void;
     enhanceDataBeforeSend?: (data: FormData) => FormData;
 
-    requestParams?: Omit<RequestInit, 'body' | 'method' | 'headers'>
+    requestParams?: Omit<RequestInit, 'body' | 'method' | 'headers'>;
+    validators?: Validators;
 }
 
 const AdminForm = ({
@@ -42,10 +48,11 @@ const AdminForm = ({
     enhanceDataBeforeSend,
 
     requestParams={},
+    validators,
 }: AdminFormProps) => {
     const history = useHistory();
-
-    const getHeaders = () => dataType === 'json' ? {'Content-Type': 'application/json'} : undefined;
+    const {errors, setErrors, clearErrors} = useFormErrors();
+    const [isFormDisabled, setFormDisabled] = useState(false);
 
     const prepareBodyForSending = (body: FormData): string | FormData => {
         const enhancedBody = enhanceDataBeforeSend ? enhanceDataBeforeSend(body) : body;
@@ -56,7 +63,7 @@ const AdminForm = ({
 
     const performRequest = async (data: FormData) => {
         const body = prepareBodyForSending(data);
-        const headers = getHeaders();
+        const headers = getHeadersFromDataType(dataType);
 
         const filteredParams = filterRequestParams(requestParams);
 
@@ -70,6 +77,8 @@ const AdminForm = ({
                 ...filteredParams,
             },
         );
+
+        setFormDisabled(false);
 
         if (!res.ok) {
             handleError && handleError(res.error);
@@ -88,10 +97,18 @@ const AdminForm = ({
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const body = new FormData(e.currentTarget);
+        const body = getFormDataFromForm(e.currentTarget);
         handleData && handleData(body);
 
-        performRequest(body);
+        const errors = validators ? getFormErrors(body, validators) : null;
+
+        if (errors && Object.keys(errors).length) {
+            setErrors(errors);
+        } else {
+            clearErrors();
+            setFormDisabled(true);
+            performRequest(body);
+        }
     };
 
     return (
@@ -99,9 +116,16 @@ const AdminForm = ({
             className={classnames(className)}
             onSubmit={handleSubmit}
         >
-            {children}
+            <WithFormContext
+                errors={errors}
+                isFormDisabled={isFormDisabled}
+                isSubmitFailed={false}
+            >
+                {children}
+            </WithFormContext>
         </form>
     );
 };
 
-export default AdminForm;
+
+export default React.memo(AdminForm);

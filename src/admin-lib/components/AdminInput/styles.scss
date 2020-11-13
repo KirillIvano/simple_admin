@@ -1,0 +1,33 @@
+@import "~vars/pads";
+@import "~vars/colors";
+
+.inputContainer {
+    margin-top: $pad3;
+
+    .inputLabel {
+        font-size: 0.875rem;
+        color: $dark-gray;
+    }
+
+    .input {
+        border-radius: 4px;
+        border: 2px solid;
+        border-color: $light-gray;
+    }
+
+    .input.errored {
+        border-color: red;
+    }
+
+    .inputError {
+        margin-top: $pad1;
+
+        color: red;
+        font-size: 0.8rem;
+        line-height: 1;
+    }
+
+    .inputError:first-child {
+        margin-top: 0;
+    }
+}
