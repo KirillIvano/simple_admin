@@ -9,12 +9,13 @@ type FormContextValueType = {
     isSubmitFailed: boolean;
     isFormDisabled: boolean;
 
-    errors?: Record<string, string[]>;
+    errors: Record<string, string[]>;
 }
 
 const DEFAULT_FORM_CONTEXT: FormContextValueType = wrapDefaultContext({
     isSubmitFailed: false,
     isFormDisabled: false,
+    errors: {},
 });
 
 export const FormContext = createContext<FormContextValueType>(DEFAULT_FORM_CONTEXT);
@@ -23,7 +24,7 @@ export const FormContext = createContext<FormContextValueType>(DEFAULT_FORM_CONT
 type WithFormContextProps = {
     isFormDisabled: boolean;
     isSubmitFailed: boolean;
-    errors?: Record<string, string[]>;
+    errors: Record<string, string[]>;
 
     children: React.ReactNode;
 }

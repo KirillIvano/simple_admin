@@ -2,7 +2,7 @@ const createOutOfContextHandler = (message='Элемент был использ
     () => {throw new Error(message);};
 
 
-export const wrapDefaultContext = <T extends Record<string, unknown>>(obj: T, message?: string): T => {
+export const wrapDefaultContext = <T extends Record<string | symbol, unknown>>(obj: T, message?: string): T => {
     const outOfContextHandler = createOutOfContextHandler(message);
 
     return Object.getOwnPropertyNames(obj)

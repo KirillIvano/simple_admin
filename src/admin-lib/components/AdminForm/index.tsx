@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import classnames from 'classnames';
 
-import {request} from '@/util/request';
 import {DataType} from '@/admin-lib/util/dataType';
 import {formDataToJson} from '@/admin-lib/util/formDataToJson';
 import {WithFormContext} from '@/admin-lib/contexts/FormContext';
 import {useFormErrors} from '@/admin-lib/hooks/useFormErrors';
+import {useRequestsContext} from '@/admin-lib/hooks/useRequestsContext';
 import {Validators} from '@/admin-lib/types/form';
 
 import {filterRequestParams} from './helpers/filterRequestParams';
@@ -25,9 +24,9 @@ type AdminFormProps = {
     className?: string;
     authRequired?: boolean;
 
-    handleSuccess?: () => void;
-    handleError?: (error: string) => void;
-    handleData?: (data: FormData) => void;
+    onSuccess?: () => void;
+    onError?: (error: string) => void;
+    onSubmit?: (data: FormData) => void;
     enhanceDataBeforeSend?: (data: FormData) => FormData;
 
     requestParams?: Omit<RequestInit, 'body' | 'method' | 'headers'>;
@@ -43,9 +42,9 @@ const AdminForm = ({
     redirectTo,
     className,
 
-    handleSuccess,
-    handleError,
-    handleData,
+    onSuccess,
+    onError,
+    onSubmit,
     enhanceDataBeforeSend,
 
     requestParams={},
@@ -54,6 +53,8 @@ const AdminForm = ({
     const history = useHistory();
     const {errors, setErrors, clearErrors} = useFormErrors();
     const [isFormDisabled, setFormDisabled] = useState(false);
+
+    const {request} = useRequestsContext();
 
     const prepareBodyForSending = (body: FormData): string | FormData => {
         const enhancedBody = enhanceDataBeforeSend ? enhanceDataBeforeSend(body) : body;
@@ -82,16 +83,10 @@ const AdminForm = ({
         setFormDisabled(false);
 
         if (!res.ok) {
-            handleError && handleError(res.error);
+            onError && onError(res.error);
         } else {
-            if (handleSuccess) {
-                handleSuccess();
-            } else if (redirectTo) {
-                history.replace(redirectTo);
-            } else {
-                // eslint-disable-next-line no-console
-                console.error('Должен быть предоставлен handleSuccess или redirectTo');
-            }
+            onSuccess &&  onSuccess();
+            redirectTo && history.replace(redirectTo);
         }
     };
 
@@ -99,7 +94,8 @@ const AdminForm = ({
         e.preventDefault();
 
         const body = getFormDataFromForm(e.currentTarget);
-        handleData && handleData(body);
+
+        onSubmit && onSubmit(body);
 
         const errors = validators ? getFormErrors(body, validators) : null;
 
@@ -114,7 +110,7 @@ const AdminForm = ({
 
     return (
         <form
-            className={classnames(className)}
+            className={className}
             onSubmit={handleSubmit}
         >
             <WithFormContext
