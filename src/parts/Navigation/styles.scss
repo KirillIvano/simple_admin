@@ -1,20 +1,27 @@
 @import "~vars/screens";
+@import "~vars/pads";
+@import "~vars/colors";
 
 $navWidth: 200px;
 
 .navContainer {
     flex: 0 0 $navWidth;
-    width: $navWidth;
 
     .nav {
+        position: fixed;
+        display: flex;
+        justify-content: center;
+
         width: $navWidth;
+        height: 100%;
+        padding: $pad2;
+
+        background: $light-gray;
     }
 }
 
-@media all and (max-width: $screen_md) {
+@media all and (max-width: $screen_sm) {
     .navContainer {
-        width: 0;
-
         .nav {
             transform: translateX(-$navWidth);
             transition: transform 1s ease-in-out;

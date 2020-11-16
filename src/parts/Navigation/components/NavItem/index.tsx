@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import classnames from 'classnames';
-'';
+
 import styles from './styles.scss';
 
 
@@ -13,7 +13,10 @@ const NavItem: React.FC<NavItemProps> = ({
     children,
     className,
 }) => (
-    <li>
+    <li className={classnames(
+        styles.navItem,
+        className,
+    )}>
         {children}
     </li>
 );
