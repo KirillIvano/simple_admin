@@ -1,0 +1,19 @@
+@import "~vars/pads";
+
+.vertical {
+    width: 0;
+
+    &.xs { height: $pad2 }
+    &.sm { height: $pad4 }
+    &.md { height: $pad8 }
+    &.lg { height: $pad16 }
+}
+
+.horizontal {
+    height: 0;
+
+    &.xs { width: $pad2 }
+    &.sm { width: $pad4 }
+    &.md { width: $pad8 }
+    &.lg { width: $pad16 }
+}
