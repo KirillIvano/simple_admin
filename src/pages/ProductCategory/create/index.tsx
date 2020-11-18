@@ -2,11 +2,12 @@ import React from 'react';
 import {Typography, Button} from 'antd';
 
 import {AdminForm, AdminInput} from '@/admin-lib/components';
-import {Validators} from '@/admin-lib/types/form';
+import {FormValidators} from '@/admin-lib/types/form';
 import {getApiRequestUrl} from '@/util/getApiRequestUrl';
+import {Space} from '@/uikit';
 
 
-const CATEGORY_FORM_VALIDATORS: Validators = {
+const CATEGORY_FORM_VALIDATORS: FormValidators = {
     name: {
         required: true,
     },
@@ -36,6 +37,8 @@ const ProductCategoryCreate = () => (
             type="file"
             name="image"
         />
+
+        <Space />
 
         <Button
             type="primary"
