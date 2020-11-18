@@ -6,7 +6,7 @@ import {formDataToJson} from '@/admin-lib/util/formDataToJson';
 import {WithFormContext} from '@/admin-lib/contexts/FormContext';
 import {useFormErrors} from '@/admin-lib/hooks/useFormErrors';
 import {useRequestsContext} from '@/admin-lib/hooks/useRequestsContext';
-import {Validators} from '@/admin-lib/types/form';
+import {FormValidators} from '@/admin-lib/types/form';
 
 import {filterRequestParams} from './helpers/filterRequestParams';
 import {getHeadersFromDataType} from './helpers/getHeadersFromDataType';
@@ -30,7 +30,7 @@ type AdminFormProps = {
     enhanceDataBeforeSend?: (data: FormData) => FormData;
 
     requestParams?: Omit<RequestInit, 'body' | 'method' | 'headers'>;
-    validators?: Validators;
+    validators?: FormValidators;
 }
 
 const AdminForm = ({
@@ -115,6 +115,7 @@ const AdminForm = ({
         >
             <WithFormContext
                 errors={errors}
+                validators={validators}
                 isFormDisabled={isFormDisabled}
                 isSubmitFailed={false}
             >

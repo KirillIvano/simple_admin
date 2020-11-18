@@ -7,6 +7,6 @@ export type ResponseType<TData extends Record<string, unknown | unknown[]>,> = {
 }
 
 export interface RequestProvider {
-    request: <TRes extends Record<string, unknown | unknown[]>,>(url: string, options: RequestInit) =>
+    request: <TRes extends Record<string, unknown | unknown[]>,>(url: string, options?: RequestInit) =>
         Promise<ResponseType<TRes>>;
 }

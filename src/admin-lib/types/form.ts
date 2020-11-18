@@ -4,11 +4,13 @@ export type RequiredValidator =  Validator<boolean>;
 export type PatternValidator = Validator<RegExp>;
 export type ValidateValidator = Validator<(value: string) => boolean>;
 
-export type Validators<TBody extends Record<string, string | Blob> = Record<string, string | Blob>> = Record<
+export type FieldValidators = {
+    required?: RequiredValidator,
+    pattern?: PatternValidator,
+    validate?: ValidateValidator;
+}
+
+export type FormValidators<TBody extends Record<string, string | Blob> = Record<string, string | Blob>> = Record<
     keyof TBody,
-    {
-        required?: RequiredValidator,
-        pattern?: PatternValidator,
-        validate?: ValidateValidator;
-    }
+    FieldValidators
 >;
