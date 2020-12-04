@@ -1,0 +1,39 @@
+@import "~vars/pads";
+@import "~vars/colors";
+
+.table {
+    .row {
+        border-bottom: 1px solid $light-gray;
+        cursor: pointer;
+
+        &:hover {
+            background: $light-gray;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .cell {
+            padding: $pad2 $pad4;
+
+            min-width: 120px;
+            max-width: 200px;
+        }
+    }
+
+    .thead {
+        border-bottom: 2px solid $dark-gray;
+
+        .row {
+            &:hover {
+                background: none;
+            }
+
+            .cell {
+                text-align: center;
+                font-weight: bold;
+            }
+        }
+    }
+}
