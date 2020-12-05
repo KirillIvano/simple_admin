@@ -2,7 +2,7 @@ import {isEmpty} from 'ramda';
 
 import {ErrorRecord} from '@/admin-lib/util/errorRecord';
 import {
-    Validators,
+    FormValidators,
     RequiredValidator,
     PatternValidator,
     ValidateValidator,
@@ -63,7 +63,7 @@ export const getValidationError = (
 
 export const getFormErrors = <TBody extends Record<string, string | File>>(
     data: FormData,
-    validators: Validators<TBody>,
+    validators: FormValidators<TBody>,
 ): (Record<string, string[]> | null) => {
     const errors = new ErrorRecord();
 

@@ -69,6 +69,8 @@ const AdminForm = ({
 
         const filteredParams = filterRequestParams(requestParams);
 
+        setFormDisabled(true);
+
         const res = await request(
             action,
             {
@@ -85,7 +87,7 @@ const AdminForm = ({
         if (!res.ok) {
             onError && onError(res.error);
         } else {
-            onSuccess &&  onSuccess();
+            onSuccess && onSuccess();
             redirectTo && history.replace(redirectTo);
         }
     };
@@ -103,7 +105,6 @@ const AdminForm = ({
             setErrors(errors);
         } else {
             clearErrors();
-            setFormDisabled(true);
             performRequest(body);
         }
     };

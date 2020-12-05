@@ -1,3 +1,3 @@
 export {default as AdminForm} from './AdminForm';
-export {default as AdminInput} from './AdminInput';
+export {AdminInput, AdminTextArea} from './AdminInput';
 export {default as Admin} from './Admin';
