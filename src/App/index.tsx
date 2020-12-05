@@ -3,7 +3,7 @@ import {Switch, Redirect, Route} from 'react-router-dom';
 import {observer} from 'mobx-react-lite';
 
 import {Preloader, AuthenticatedRoute} from '@/components';
-import {Navigation} from '@/parts';
+import {Navigation, Header} from '@/parts';
 import {ProductCategoryPages, ProductPages, LoginPage} from '@/pages';
 import {Admin} from '@/admin-lib/components';
 import {useHttpContext} from '@/store/ports/http';
@@ -16,7 +16,6 @@ const App: React.FC = observer(() => {
     const httpService = useHttpContext();
     const userStore = useUserContext();
 
-
     useEffect(() => {
         userStore.init();
     }, [userStore]);
@@ -28,8 +27,10 @@ const App: React.FC = observer(() => {
 
     return (
         <Admin requestProvider={httpService}>
+            <Header />
+
             <div className={styles.appContainer}>
-                <Navigation isOpen={true} />
+                <Navigation />
 
                 <div className={styles.pageContent}>
                     <Suspense fallback={Preloader}>

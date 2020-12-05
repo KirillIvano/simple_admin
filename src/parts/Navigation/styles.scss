@@ -7,16 +7,32 @@ $navWidth: 200px;
 .navContainer {
     flex: 0 0 $navWidth;
 
+    .overlay {
+        display: none;
+    }
+
     .nav {
+        z-index: 1000;
+
         position: fixed;
+        top: 0;
+        left: 0;
+
         display: flex;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
 
         width: $navWidth;
-        height: 100%;
+        height: 100vh;
+
         padding: $pad2;
 
         background: $light-gray;
+
+        .closeIcon {
+            display: none;
+        }
     }
 }
 
@@ -25,11 +41,23 @@ $navWidth: 200px;
         flex: 0 0 0;
 
         .nav {
-            transform: translateX(-$navWidth);
-            transition: transform 1s ease-in-out;
-        }
+            width: 100%;
 
-        .nav.opened {
+            transform: translateX(-100%);
+            transition: transform 0.2s ease-in-out;
+
+            .closeIcon {
+                display: block;
+
+                position: absolute;
+                right: $pad4;
+                top: $pad4;
+            }
+        }
+    }
+
+    .navContainer.opened {
+        .nav {
             transform: translateX(0);
         }
     }

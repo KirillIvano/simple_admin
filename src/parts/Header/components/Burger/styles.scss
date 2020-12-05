@@ -1,0 +1,24 @@
+@import "~vars/pads";
+@import "~vars/colors";
+
+.burgerContainer {
+    padding: $pad1;
+
+    border: none;
+    background: transparent;
+
+    cursor: pointer;
+
+    .burger {
+        width: 30px;
+        padding-bottom: 100%;
+
+        background:
+            repeating-linear-gradient(
+                $dark-gray 0,
+                $dark-gray 20%,
+                transparent 0,
+                transparent 40%,
+            );
+    }
+}
