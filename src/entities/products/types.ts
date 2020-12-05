@@ -1,5 +1,6 @@
 export type ProductPreviewType = {
     id: number;
+    categoryId: number;
     name: string;
 }
 
@@ -16,6 +17,7 @@ export type ProductCategoryPreviewType = {
 
 export type ProductType = {
     id: number;
+    categoryId: number;
     name: string;
     shortDescription: string;
     description: string;

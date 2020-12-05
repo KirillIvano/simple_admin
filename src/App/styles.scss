@@ -6,6 +6,8 @@
     .pageContent {
         flex: 1 1 auto;
 
-        padding: $pad8;
+        padding-top: $pad8;
+        padding-left: $pad4;
+        padding-right: $pad4;
     }
 }

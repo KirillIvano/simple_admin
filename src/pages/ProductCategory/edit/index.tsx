@@ -1,27 +1,40 @@
-import React, {useCallback} from 'react';
-import {Redirect, useHistory, useParams} from 'react-router-dom';
+import React, {useCallback, useEffect} from 'react';
+import {useHistory, useParams} from 'react-router-dom';
 import {Button, Typography} from 'antd';
 
 import {AdminForm, AdminInput} from '@/admin-lib/components';
 import {getApiRequestUrl} from '@/util/getApiRequestUrl';
 import {useAdminData} from '@/admin-lib/hooks/useAdminData';
 import {Preloader} from '@/components';
-import {Space} from '@/uikit';
+import {ErrorMessage, Space} from '@/uikit';
+import {useMessages} from '@/hooks/useMessages';
+
+import {getProductsCategoryListPath} from '../routes';
 
 
 const EditProduct = () => {
     const history = useHistory();
+    const messages = useMessages();
     const {categoryId} = useParams<{categoryId: string}>();
 
-    const handleSuccess = useCallback(() => history.push('/categories'), [history]);
-
-    const {loading, error, data} = useAdminData<{name: string}>(
+    const {error, data} = useAdminData<{name: string}>(
         getApiRequestUrl(`/products/categories/${categoryId}`),
     );
 
-    if (loading) return <Preloader />;
-    if (error) return <p>{error}</p>;
-    if (!data) return <Redirect to={'/categories'} />;
+    const handleSuccess = useCallback(
+        () => {
+            messages.success('Категория успешно отредактирована');
+            history.push(getProductsCategoryListPath());
+        },
+        [messages, history],
+    );
+
+    useEffect(() => {
+        error && messages.error(error);
+    }, [error, messages]);
+
+    if (error) return <ErrorMessage>{error}</ErrorMessage>;
+    if (!data) return <Preloader />;
 
     return (
         <AdminForm
