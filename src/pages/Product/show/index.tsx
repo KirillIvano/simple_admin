@@ -9,6 +9,7 @@ import {DescriptionTable} from '@/uikit';
 import {getApiRequestUrl} from '@/util/getApiRequestUrl';
 import {getImageUrl} from '@/util/getImageUrl';
 import {getProductsCategoryShowPath} from '@/pages/ProductCategory/routes';
+import {useMessages} from '@/hooks/useMessages';
 
 import {getProductEditPath} from '../routes';
 
@@ -18,6 +19,7 @@ const ProductShow = () => {
     const {data, error} = useAdminData<{product: ProductType}>(getApiRequestUrl(`/products/${productId}`));
 
     const history = useHistory();
+    const messages = useMessages();
 
     if (error) return <p>{error}</p>;
     if (!data) return <Preloader />;
@@ -35,7 +37,11 @@ const ProductShow = () => {
                     url={getApiRequestUrl(`/products/${product.id}`)}
 
                     confirmationMessage="Вы точно хотите удалить продукт"
-                    handleSuccess={() => history.push(getProductsCategoryShowPath(product.categoryId))}
+                    handleSuccess={() => {
+                        history.push(getProductsCategoryShowPath(product.categoryId));
+                        messages.success('Продукт успешно удалён');
+                    }}
+                    handleError={() => messages.error('Не удалось удалить продукт')}
                 >
                     Удалить продукт
                 </DeleteBtn>

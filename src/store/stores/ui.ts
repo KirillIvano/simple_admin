@@ -5,7 +5,7 @@ import {UIStore as UIStoreInterface} from './../ports/ui';
 
 export class UIStore implements UIStoreInterface {
     @observable
-    isNavVisible = true;
+    isNavVisible = false;
 
     constructor() {
         makeObservable(this);

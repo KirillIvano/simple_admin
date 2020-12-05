@@ -8,6 +8,7 @@ import {DescriptionTable, ErrorMessage, Space} from '@/uikit';
 import {getApiRequestUrl} from '@/util/getApiRequestUrl';
 import {getImageUrl} from '@/util/getImageUrl';
 import {getProductCreatePath} from '@/pages/Product/routes';
+import {useMessages} from '@/hooks/useMessages';
 
 import {CategoryProducts} from '../parts';
 import {getProductsCategoryEditPath, getProductsCategoryListPath} from '../routes';
@@ -16,6 +17,7 @@ import {getProductsCategoryEditPath, getProductsCategoryListPath} from '../route
 const CategoryShow = () => {
     const history = useHistory();
     const location = useLocation();
+    const messages = useMessages();
 
     const {categoryId} = useParams<{categoryId: string}>();
     const {error, data} = useAdminData<{name: string; image: string; id: number}>(
@@ -50,7 +52,11 @@ const CategoryShow = () => {
                     url={getApiRequestUrl(`/products/categories/${categoryId}`)}
                     confirmationMessage={'Вы точно хотите удалить категорию?'}
 
-                    handleSuccess={() => history.push(getProductsCategoryListPath())}
+                    handleSuccess={() => {
+                        history.push(getProductsCategoryListPath());
+                        messages.success('Категория удалена');
+                    }}
+                    handleError={() => messages.error('Не удалось удалить категорию')}
                 >
                     {'Удалить'}
                 </DeleteBtn>
